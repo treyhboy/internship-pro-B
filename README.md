@@ -14,6 +14,8 @@
             +-- src
             |   +-- model
             |   |   +-- userSchema.js
+            |   |   +-- fbUserSchema.js
+            |   |   +-- leaderBoardSchema.js
             |   +-- routes
             |   |   +-- login.js
             |   |   +-- dashboard.js
