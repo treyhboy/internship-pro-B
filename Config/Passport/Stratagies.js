@@ -1,25 +1,6 @@
-const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-const ud = require("./db").ud;
+const ud = require("../db").ud;
 const bcrypt = require("bcrypt");
-
-passport.serializeUser(function(user, done) {
-  console.log("serialize start");
-  done(null, user.id);
-  console.log("serialize end");
-});
-
-passport.deserializeUser(function(id, done) {
-  console.log("deserialize");
-  ud
-    .findById(id)
-    .then(function(user) {
-      done(null, user.dataValues);
-    })
-    .catch(function(err) {
-      done(err, false);
-    });
-});
 
 const LocalLogin = new LocalStrategy(function(username, password, done) {
   console.log("local strategy");
@@ -75,8 +56,4 @@ const LocalSignup = new LocalStrategy(function(req, email, password, done) {
   });
 });
 
-passport.use("local-signup", LocalSignup);
-
-passport.use("local-login", LocalLogin);
-
-module.exports = passport;
+module.exports = { LocalSignup, LocalLogin };
