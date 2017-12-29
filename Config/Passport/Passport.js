@@ -1,4 +1,4 @@
-const passport = require("Config/Passport/Passport");
+const passport = require("Passport");
 const strategies = require("./Stratagies");
 const ud = require("../db").ud;
 

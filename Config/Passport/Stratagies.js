@@ -3,33 +3,36 @@ const ud = require("../db").ud;
 const bcrypt = require("bcrypt");
 
 const LocalLogin = new LocalStrategy(function(username, password, done) {
-  console.log("local strategy");
+
   if (username) username = username.toLowerCase(); // Use lower-case e-mails to avoid case-sensitive e-mail matching
 
-  ud
-    .findOne({ where: { username: username } })
-    .then(function(user) {
-      if (user.username === username) {
-        bcrypt.compare(password, user.pass).then(function(res) {
-          // res == true
-          if (res) {
-            done(null, user.dataValues);
-          } else {
-            done(null, false, { Message: "wrong pass" });
-          }
-        });
-      } else {
-        done(null, false, { message: "User not found" });
-      }
-    })
-    .catch(function(err) {
-      done(null, false, { message: "User not found" });
-    });
+  process.nextTick(function () {
+    ud
+      .findOne({where: {username: username}})
+      .then(function (user) {
+        if (user.username === username) {
+          bcrypt.compare(password, user.pass).then(function (res) {
+            if (res) {
+              done(null, user.dataValues);
+            } else {
+              done(null, false, {Message: "wrong pass"});
+            }
+          });
+        } else {
+          done(null, false, {message: "User not found"});
+        }
+      })
+      .catch(function () {
+        done(null, false, {message: "User not found"});
+      });
+  });
 });
 
-const LocalSignup = new LocalStrategy(function(req, email, password, done) {
+const LocalSignup = new LocalStrategy(function(email, password, done) {
   if (email) email = email.toLowerCase();
-
+  console.log(password);
+  console.log(email);
+  console.log(done);
   process.nextTick(function() {
     ud
       .findOne({ where: { username: email } })

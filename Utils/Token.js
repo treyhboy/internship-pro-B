@@ -4,14 +4,11 @@ const createGravatarUrl = require("./createGravatar");
 
 function createToken(user) {
   let scope;
-  // Check if the user object passed in
-  // has admin set to true, and if so, set
-  // scopes to admin
+
   if (user.admin) {
     scope = "admin";
   }
 
-  // Sign the JWT
   return jwt.sign(
     {
       sub: user.id,
