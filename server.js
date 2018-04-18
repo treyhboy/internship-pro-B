@@ -35,6 +35,6 @@ app.use((r, s, n) => {
 app.use("/", routes);
 
 
-server.listen(process.env.PORT, function () {
+server.listen(process.env.PORT||1234, function () {
   console.log("Server started on http://localhost:1234");
 });
