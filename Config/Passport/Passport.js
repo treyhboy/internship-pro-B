@@ -1,4 +1,4 @@
-let passport = require("Passport");
+var passport = require("passport");
 const strategies = require("./Stratagies");
 const ud = require("../db").ud;
 
