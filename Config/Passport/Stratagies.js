@@ -1,6 +1,6 @@
 const LocalStrategy = require("passport-local").Strategy;
 const ud = require("../db").ud;
-const bcrypt = require("bcrypt");
+var bcrypt = require('bcryptjs');
 
 const LocalLogin = new LocalStrategy(function(username, password, done) {
 
@@ -11,13 +11,13 @@ const LocalLogin = new LocalStrategy(function(username, password, done) {
       .findOne({where: {username: username}})
       .then(function (user) {
         if (user.username === username) {
-          bcrypt.compare(password, user.pass).then(function (res) {
+          bcrypt.compare(password, user.pass),function (res) {
             if (res) {
               done(null, user.dataValues);
             } else {
               done(null, false, {Message: "wrong pass"});
             }
-          });
+          };
         } else {
           done(null, false, {message: "User not found"});
         }
@@ -40,18 +40,20 @@ const LocalSignup = new LocalStrategy(function(email, password, done) {
         if (user) {
           return done(null, false, { message: "User Exist" });
         } else {
-          bcrypt.hash(password, 10).then(function(hash) {
-            ud
-              .create({
-                username: email,
-                pass: hash
-              })
-              .then(function(user) {
-                return done(null, user.dataValues);
-              })
-              .catch(function(err) {
-                throw err;
-              });
+          bcrypt.genSalt(10, function(err, salt) {
+            bcrypt.hash(password, salt, function(err, hash) {
+              ud
+                .create({
+                  username: email,
+                  pass: hash
+                })
+                .then(function(user) {
+                  return done(null, user.dataValues);
+                })
+                .catch(function(err) {
+                  throw err;
+                });
+            });
           });
         }
       })
