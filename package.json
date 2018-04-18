@@ -26,6 +26,7 @@
     "mysql2": "^1.5.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
+    "pg": "^7.4.1",
     "sequelize": "^4.28.6",
     "socket.io": "^2.0.4",
     "socketio-jwt": "^4.5.0"
